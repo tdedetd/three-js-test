@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 
 export function getPlane() {
-  const geometry = new THREE.PlaneGeometry(50, 50);
+  const geometry = new THREE.PlaneGeometry(300, 300);
   const material = new THREE.MeshStandardMaterial({
-    color: 0xffff00,
+    color: 0xede8b7,
     roughness: 0.6,
     metalness: 0.1,
   });

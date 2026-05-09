@@ -8,7 +8,7 @@ export function getSphere(geometryTranslate?: { x: number, y: number, z: number 
   }
 
   const material = new THREE.MeshPhongMaterial({
-    color: 0x770077,
+    color: 0x949dff,
     shininess: 70,
     flatShading: false,
   });

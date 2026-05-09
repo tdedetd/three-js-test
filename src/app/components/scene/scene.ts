@@ -22,29 +22,38 @@ export class Scene {
     const renderer = inject(Renderer2);
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xffffff);
+    scene.background = new THREE.Color(0x000000);
+    scene.fog = new THREE.Fog(0x000000, 50, 100);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.shadowMap.enabled = true;
 
     this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 1000);
     this.camera.position.set(5, 2, 4);
     this.camera.lookAt(0, 0, 0);
 
     const cube = getCube();
+    cube.position.z = 2;
+    cube.castShadow = true;
     scene.add(cube);
 
     const sphere = getSphere({ x: 3, y: 0, z: 0 });
+    sphere.castShadow = true;
     scene.add(sphere);
 
     const plane = getPlane();
     plane.position.y = -0.5;
     plane.rotation.x = degToRad(-90);
+    plane.receiveShadow = true;
     scene.add(plane);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
 
-    const pointLight = new THREE.PointLight(0xffffff, 10, 10, 1);
-    pointLight.position.set(5, 2, 4);
+    const pointLight = new THREE.PointLight(0xffffff, 6, 40, 1);
+    pointLight.position.set(1, 2, 4);
+    pointLight.castShadow = true;
+    pointLight.shadow.mapSize.width = 2048;
+    pointLight.shadow.mapSize.height = 2048;
     scene.add(pointLight);
 
     const controls = new OrbitControls(this.camera, this.renderer.domElement);
