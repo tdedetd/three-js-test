@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export function getSphere(geometryTranslate?: { x: number, y: number, z: number }) {
-  const geometry = new THREE.SphereGeometry(0.5);
+  const geometry = new THREE.SphereGeometry(0.5, 32, 32);
 
   if (geometryTranslate) {
     geometry.translate(geometryTranslate.x, geometryTranslate.y, geometryTranslate.z);

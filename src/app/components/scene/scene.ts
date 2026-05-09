@@ -3,6 +3,8 @@ import * as THREE from 'three';
 import { getCube } from './utils/functions/get-cube';
 import { getSphere } from './utils/functions/get-sphere';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
+import { degToRad } from 'three/src/math/MathUtils.js';
+import { getPlane } from './utils/functions/get-plane';
 
 @Component({
   selector: 'app-scene',
@@ -20,7 +22,7 @@ export class Scene {
     const renderer = inject(Renderer2);
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x050b1a);
+    scene.background = new THREE.Color(0xffffff);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
 
     this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 1000);
@@ -33,7 +35,12 @@ export class Scene {
     const sphere = getSphere({ x: 3, y: 0, z: 0 });
     scene.add(sphere);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const plane = getPlane();
+    plane.position.y = -0.5;
+    plane.rotation.x = degToRad(-90);
+    scene.add(plane);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
 
     const pointLight = new THREE.PointLight(0xffffff, 10, 10, 1);
@@ -48,7 +55,7 @@ export class Scene {
       this.updateSizes();
 
       const animate: XRFrameRequestCallback = (time) => {
-        cube.rotation.y = ((time / 10) % 360) * Math.PI / 180;
+        cube.rotation.y = degToRad((time / 10) % 360);
         this.renderer.render(scene, this.camera);
       };
 
