@@ -2,6 +2,7 @@ import { Component, effect, ElementRef, HostListener, inject, Renderer2 } from '
 import * as THREE from 'three';
 import { getCube } from './utils/functions/get-cube';
 import { getSphere } from './utils/functions/get-sphere';
+import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
 @Component({
   selector: 'app-scene',
@@ -29,16 +30,18 @@ export class Scene {
     const cube = getCube();
     scene.add(cube);
 
-    const sphere = getSphere();
-    sphere.position.x = 3;
+    const sphere = getSphere({ x: 3, y: 0, z: 0 });
     scene.add(sphere);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
-    const pointLight = new THREE.PointLight(0xff44aa, 10, 100, 1);
+    const pointLight = new THREE.PointLight(0xffffff, 10, 10, 1);
     pointLight.position.set(5, 2, 4);
     scene.add(pointLight);
+
+    const controls = new OrbitControls(this.camera, this.renderer.domElement);
+    controls.update();
 
     effect(() => {
       renderer.appendChild(this.elementRef.nativeElement, this.renderer.domElement);
@@ -68,5 +71,15 @@ export class Scene {
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
     }
+  }
+
+  private addGrid(scene: THREE.Scene<THREE.Object3DEventMap>): void {
+    const axesHelper = new THREE.AxesHelper(3);
+    scene.add(axesHelper);
+
+    const size = 10;
+    const divisions = 10;
+    const gridHelper = new THREE.GridHelper(size, divisions);
+    scene.add(gridHelper);
   }
 }
