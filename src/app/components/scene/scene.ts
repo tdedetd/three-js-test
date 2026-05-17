@@ -26,9 +26,8 @@ export class Scene {
 
     this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 1000);
     this.camera.position.set(12.7, 10, 5.5);
-    this.camera.lookAt(0, 0, 0);
 
-    generateCubesGrid(scene, 10);
+    generateCubesGrid(scene, 5);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 2.7);
     scene.add(ambientLight);
@@ -42,6 +41,8 @@ export class Scene {
 
     const controls = new OrbitControls(this.camera, this.renderer.domElement);
     controls.update();
+
+    this.addGrid(scene);
 
     effect(() => {
       renderer.appendChild(this.elementRef.nativeElement, this.renderer.domElement);
