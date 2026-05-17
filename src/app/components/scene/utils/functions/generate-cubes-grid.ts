@@ -7,7 +7,7 @@ import { mixColors } from '../../../../utils/functions/mix-colors';
 export function generateCubesGrid(scene: THREE.Scene<THREE.Object3DEventMap>, size: number): void {
   coordsInterval2d({ min: -size, max: size }, (x, y) => {
     const height = randInt(0, size);
-    const color = mixColors([0, 255, 0], [255, 0, 0], height / size);
+    const color = mixColors([0, 0, 0], [255, 255, 255], height / size);
     const cube = generateCube(new THREE.Color(`rgb(${color[0]}, ${color[1]}, ${color[2]})`));
 
     cube.position.x = x;
