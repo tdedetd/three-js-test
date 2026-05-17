@@ -1,10 +1,7 @@
 import { Component, effect, ElementRef, HostListener, inject, Renderer2 } from '@angular/core';
 import * as THREE from 'three';
-import { getCube } from './utils/functions/get-cube';
-import { getSphere } from './utils/functions/get-sphere';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
-import { degToRad } from 'three/src/math/MathUtils.js';
-import { getPlane } from './utils/functions/get-plane';
+import {  generateCubesGrid } from './utils/functions/generate-cubes-grid';
 
 @Component({
   selector: 'app-scene',
@@ -28,23 +25,10 @@ export class Scene {
     this.renderer.shadowMap.enabled = true;
 
     this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 1000);
-    this.camera.position.set(5, 2, 4);
+    this.camera.position.set(12.7, 10, 5.5);
     this.camera.lookAt(0, 0, 0);
 
-    const cube = getCube();
-    cube.position.z = 2;
-    cube.castShadow = true;
-    scene.add(cube);
-
-    const sphere = getSphere({ x: 3, y: 0, z: 0 });
-    sphere.castShadow = true;
-    scene.add(sphere);
-
-    const plane = getPlane();
-    plane.position.y = -0.5;
-    plane.rotation.x = degToRad(-90);
-    plane.receiveShadow = true;
-    scene.add(plane);
+    generateCubesGrid(scene, 5);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
@@ -64,7 +48,6 @@ export class Scene {
       this.updateSizes();
 
       const animate: XRFrameRequestCallback = (time) => {
-        cube.rotation.y = degToRad((time / 10) % 360);
         this.renderer.render(scene, this.camera);
       };
 
