@@ -1,14 +1,14 @@
-import { GridVector } from './models/grid-vector.model';
+import { Point } from './models/point.model';
 
 export class PerlinNoiseCache {
-  private gridVectors: Partial<Record<string, GridVector>> = {};
+  private gridVectors: Partial<Record<string, Point>> = {};
 
-  public getGridVector(x: number, y: number): GridVector | undefined {
+  public getGridVector(x: number, y: number): Point | undefined {
     const id = this.getGridVectorId(x, y);
     return this.gridVectors[id];
   }
 
-  public setGridVector(x: number, y: number, gridVector: GridVector): void {
+  public setGridVector(x: number, y: number, gridVector: Point): void {
     const id = this.getGridVectorId(x, y);
     this.gridVectors[id] = gridVector;
   }

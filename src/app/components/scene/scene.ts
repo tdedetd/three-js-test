@@ -20,14 +20,14 @@ export class Scene {
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xad9d76);
-    scene.fog = new THREE.Fog(0xad9d76, 50, 100);
+    scene.fog = new THREE.Fog(0xad9d76, 500, 1000);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.shadowMap.enabled = true;
 
     this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 1000);
     this.camera.position.set(12.7, 10, 5.5);
 
-    generateCubesGrid(scene, 5);
+    generateCubesGrid(scene, 50);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 2.7);
     scene.add(ambientLight);
