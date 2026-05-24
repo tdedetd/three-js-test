@@ -4,8 +4,8 @@ import { generateCube } from './generate-cube';
 import { mixColors } from '../../../../utils/functions/mix-colors';
 import { PerlinNoise } from '../../../../utils/perlin-noise/perlin-noise';
 
-const minHeight = -4;
-const maxHeight = 4;
+const minHeight = -1;
+const maxHeight = 1;
 
 export function generateCubesGrid(
   scene: THREE.Scene<THREE.Object3DEventMap>,
@@ -37,7 +37,7 @@ function generateCubeWithNoise(
 
   cube.position.x = x;
   cube.position.z = y;
-  cube.position.y = cubeHeight / 2;
+  cube.position.y = cubeHeight;
   scene.add(cube);
 
   return cubeHeight;
