@@ -36,17 +36,20 @@ export class PerlinNoise {
     const blDistance: Point = [x - closestMinX, y - closestMaxY];
     const brDistance: Point = [x - closestMaxX, y - closestMaxY];
 
-    const tlDot = dot(tlDistance, tlGradient);
-    const trDot = dot(trDistance, trGradient);
-    const blDot = dot(blDistance, blGradient);
-    const brDot = dot(brDistance, brGradient);
+    const tlDot = dot(tlGradient, tlDistance);
+    const trDot = dot(trGradient, trDistance);
+    const blDot = dot(blGradient, blDistance);
+    const brDot = dot(brGradient, brDistance);
 
-    const pointInGrid: Point = [x - closestMinX, y - closestMinY];
-    const fadedPointInGrid: Point = [qunticCurve(pointInGrid[0]), qunticCurve(pointInGrid[1])];
+    const [tx, ty] = [
+      (x - closestMinX) / this.layer.gridSize,
+      (y - closestMinY) / this.layer.gridSize,
+    ];
+    const [fadedTx, fadedTy] = [qunticCurve(tx), qunticCurve(ty)];
 
-    const tLerp = lerp(tlDot, trDot, fadedPointInGrid[0]);
-    const bLerp = lerp(blDot, brDot, fadedPointInGrid[0]);
-    return lerp(tLerp, bLerp, fadedPointInGrid[1]);
+    const tLerp = lerp(tlDot, trDot, fadedTx);
+    const bLerp = lerp(blDot, brDot, fadedTx);
+    return lerp(tLerp, bLerp, fadedTy);
   }
 
   private getRandomGradientVector(point: [number, number]): Point {
