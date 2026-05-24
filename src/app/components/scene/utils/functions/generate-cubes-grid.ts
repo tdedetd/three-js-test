@@ -20,7 +20,10 @@ export function generateCubesGrid(
       { gridSize: 2 },
       { gridSize: 1 },
     ],
-    574829103718473,
+    {
+      seed: 574829103718473,
+      persistance: 0.5,
+    },
   );
 
   const result = coordsInterval2d(
@@ -38,7 +41,7 @@ function generateCubeWithNoise(
   perlinNoise: PerlinNoise,
   cubeSize: number,
 ): number {
-  const cubeHeight = perlinNoise.getValue(x, y, 0.5);
+  const cubeHeight = perlinNoise.getValue(x, y);
   const color = mixColors([0, 0, 0], [255, 255, 255], (cubeHeight - minHeight) / (maxHeight - minHeight));
   const cube = generateCube(new THREE.Color(`rgb(${color[0]}, ${color[1]}, ${color[2]})`), cubeSize);
 
