@@ -27,7 +27,7 @@ export class Scene {
     this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 1000);
     this.camera.position.set(12.7, 10, 5.5);
 
-    generateCubesGrid(scene, 50);
+    generateCubesGrid(scene, 100);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 2.7);
     scene.add(ambientLight);
