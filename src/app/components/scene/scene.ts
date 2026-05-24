@@ -42,7 +42,7 @@ export class Scene {
     const controls = new OrbitControls(this.camera, this.renderer.domElement);
     controls.update();
 
-    this.addGrid(scene);
+    // this.addGrid(scene);
 
     effect(() => {
       renderer.appendChild(this.elementRef.nativeElement, this.renderer.domElement);

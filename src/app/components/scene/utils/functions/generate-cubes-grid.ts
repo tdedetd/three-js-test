@@ -26,18 +26,23 @@ export function generateCubesGrid(
     },
   );
 
+  const group = new THREE.Group();
+
   const result = coordsInterval2d(
     { min: 0.5, max: length - 1 + 0.5, interval: cubeSize },
-    (x, y) => generateCubeWithNoise(x, y, scene, perlinNoise, cubeSize),
+    (x, y) => generateCubeWithNoise(x, y, group, perlinNoise, cubeSize),
   );
 
+  group.position.x = -length / 2;
+  group.position.z = -length / 2;
+  scene.add(group);
   console.info(result);
 }
 
 function generateCubeWithNoise(
   x: number,
   y: number,
-  scene: THREE.Scene<THREE.Object3DEventMap>,
+  group: THREE.Group,
   perlinNoise: PerlinNoise,
   cubeSize: number,
 ): number {
@@ -48,7 +53,7 @@ function generateCubeWithNoise(
   cube.position.x = x;
   cube.position.z = y;
   cube.position.y = cubeHeight * 5;
-  scene.add(cube);
+  group.add(cube);
 
   return cubeHeight * 5;
 }
