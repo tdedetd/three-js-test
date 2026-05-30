@@ -3,7 +3,7 @@ import { lerp } from '../functions/lerp';
 import { qunticCurve } from '../functions/quntic-curve';
 import { toCartesian } from '../functions/to-cartesian';
 import { PerlinNoiseLayerOptions } from './models/perlin-noise-layer-options.model';
-import { Point } from './models/point.model';
+import { Point } from '../../models/point.model';
 import { PerlinNoiseCache } from './perlin-noise-cache';
 import { SeededRandom } from './seeded-random';
 

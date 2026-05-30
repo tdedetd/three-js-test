@@ -1,10 +1,11 @@
 import * as THREE from 'three';
 import { degToRad } from 'three/src/math/MathUtils.js';
+import { Point } from '../../../../models/point.model';
 
 export function generateRoad(
   width: number,
-  from: [number, number],
-  to: [number, number],
+  from: Point,
+  to: Point,
   customName?: string,
 ) {
   const xSize = Math.abs(to[0] - from[0]);
