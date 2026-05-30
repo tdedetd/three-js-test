@@ -29,8 +29,9 @@ export class Scene {
 
     {
       const district = new District({
-        innerSize: 10,
-        roadWidth: 7,
+        innerSize: 20,
+        roadWidth: 1,
+        minCityBlockSize: 1,
         seed: 574829103718473,
       });
       scene.add(district.group);
