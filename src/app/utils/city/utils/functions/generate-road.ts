@@ -1,12 +1,16 @@
 import * as THREE from 'three';
-import { roadWidth } from '../const/road-width';
 import { degToRad } from 'three/src/math/MathUtils.js';
 
-export function generateRoad(from: [number, number], to: [number, number]) {
+export function generateRoad(
+  width: number,
+  from: [number, number],
+  to: [number, number],
+  customName?: string,
+) {
   const xSize = Math.abs(to[0] - from[0]);
   const zSize = Math.abs(to[1] - from[1]);
 
-  const geometry = new THREE.PlaneGeometry(xSize + roadWidth, zSize + roadWidth);
+  const geometry = new THREE.PlaneGeometry(xSize + width, zSize + width);
   const material = new THREE.MeshStandardMaterial({
     color: 0x505050,
     roughness: 0.6,
@@ -17,6 +21,6 @@ export function generateRoad(from: [number, number], to: [number, number]) {
   mesh.position.x = Math.min(from[0], to[0]) + xSize / 2;
   mesh.position.z = Math.min(from[1], to[1]) + zSize / 2;
   mesh.rotation.x = degToRad(-90);
-  mesh.name = 'Road';
+  mesh.name = customName ?? 'Road';
   return mesh;
 }

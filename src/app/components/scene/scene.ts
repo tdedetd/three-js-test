@@ -1,7 +1,7 @@
 import { Component, effect, ElementRef, HostListener, inject, Renderer2 } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
-import { generateDistrict } from '../../utils/city/generate-district';
+import { District } from '../../utils/city/district';
 
 @Component({
   selector: 'app-scene',
@@ -27,16 +27,26 @@ export class Scene {
     this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 1000);
     this.camera.position.set(12.7, 10, 5.5);
 
-    const district = generateDistrict(10);
-    scene.add(district);
+    {
+      const district = new District({
+        innerSize: 10,
+        roadWidth: 7,
+        seed: 574829103718473,
+      });
+      scene.add(district.group);
+    }
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.7);
-    scene.add(ambientLight);
+    {
+      const ambientLight = new THREE.AmbientLight(0xffffff, 2.7);
+      scene.add(ambientLight);
+    }
 
-    const controls = new OrbitControls(this.camera, this.renderer.domElement);
-    controls.update();
+    {
+      const controls = new OrbitControls(this.camera, this.renderer.domElement);
+      controls.update();
+    }
 
-    this.addGrid(scene, 16);
+    this.addGrid(scene, 20);
 
     effect(() => {
       renderer.appendChild(this.elementRef.nativeElement, this.renderer.domElement);
