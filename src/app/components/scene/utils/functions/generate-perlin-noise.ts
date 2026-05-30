@@ -7,7 +7,7 @@ import { PerlinNoise } from '../../../../utils/perlin-noise/perlin-noise';
 const minHeight = -1;
 const maxHeight = 1;
 
-export function generateCubesGrid(
+export function generatePerlinNoise(
   scene: THREE.Scene<THREE.Object3DEventMap>,
   length: number,
   cubeSize = 1,

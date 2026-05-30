@@ -1,7 +1,7 @@
 import { Component, effect, ElementRef, HostListener, inject, Renderer2 } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
-import {  generateCubesGrid } from './utils/functions/generate-cubes-grid';
+import { generateDistrict } from '../../utils/city/generate-district';
 
 @Component({
   selector: 'app-scene',
@@ -27,7 +27,8 @@ export class Scene {
     this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 1000);
     this.camera.position.set(12.7, 10, 5.5);
 
-    generateCubesGrid(scene, 100);
+    const district = generateDistrict();
+    scene.add(district);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 2.7);
     scene.add(ambientLight);
@@ -42,7 +43,7 @@ export class Scene {
     const controls = new OrbitControls(this.camera, this.renderer.domElement);
     controls.update();
 
-    // this.addGrid(scene);
+    this.addGrid(scene, 16);
 
     effect(() => {
       renderer.appendChild(this.elementRef.nativeElement, this.renderer.domElement);
@@ -73,13 +74,11 @@ export class Scene {
     }
   }
 
-  private addGrid(scene: THREE.Scene<THREE.Object3DEventMap>): void {
+  private addGrid(scene: THREE.Scene<THREE.Object3DEventMap>, size: number): void {
     const axesHelper = new THREE.AxesHelper(3);
     scene.add(axesHelper);
 
-    const size = 10;
-    const divisions = 10;
-    const gridHelper = new THREE.GridHelper(size, divisions);
+    const gridHelper = new THREE.GridHelper(size, size);
     scene.add(gridHelper);
   }
 }
