@@ -27,6 +27,7 @@ export function generatePerlinNoise(
   );
 
   const group = new THREE.Group();
+  group.name = 'PerlinNoiseGrid';
 
   const result = coordsInterval2d(
     { min: 0.5, max: length - 1 + 0.5, interval: cubeSize },

@@ -17,5 +17,6 @@ export function generateRoad(from: [number, number], to: [number, number]) {
   mesh.position.x = Math.min(from[0], to[0]) + xSize / 2;
   mesh.position.z = Math.min(from[1], to[1]) + zSize / 2;
   mesh.rotation.x = degToRad(-90);
+  mesh.name = 'Road';
   return mesh;
 }

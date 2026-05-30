@@ -27,18 +27,11 @@ export class Scene {
     this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 1000);
     this.camera.position.set(12.7, 10, 5.5);
 
-    const district = generateDistrict();
+    const district = generateDistrict(10);
     scene.add(district);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 2.7);
     scene.add(ambientLight);
-
-    const pointLight = new THREE.PointLight(0xffffff, 6, 40, 1);
-    pointLight.position.set(1, 2, 4);
-    pointLight.castShadow = true;
-    pointLight.shadow.mapSize.width = 2048;
-    pointLight.shadow.mapSize.height = 2048;
-    scene.add(pointLight);
 
     const controls = new OrbitControls(this.camera, this.renderer.domElement);
     controls.update();
@@ -76,6 +69,7 @@ export class Scene {
 
   private addGrid(scene: THREE.Scene<THREE.Object3DEventMap>, size: number): void {
     const axesHelper = new THREE.AxesHelper(3);
+    axesHelper.position.y = 0.1
     scene.add(axesHelper);
 
     const gridHelper = new THREE.GridHelper(size, size);
