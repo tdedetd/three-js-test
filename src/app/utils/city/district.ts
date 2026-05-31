@@ -4,6 +4,10 @@ import { DistrictOptions } from './models/district-options.model';
 import { generatePerimeterRoads } from './utils/functions/generate-perimeter-roads';
 import { Rectangle } from '../../models/rectangle.model';
 import { generateRoad } from './utils/functions/generate-road';
+import { getRectanglePatchSeed } from './utils/functions/get-rectangle-patch-seed';
+import { generatePlane } from './utils/functions/generate-plane';
+import { subdivideRectangle } from './utils/functions/subsivide-rectangle';
+import { insetRectangle } from '../functions/inset-rectangle';
 
 export class District {
   public readonly group: THREE.Group;
@@ -29,7 +33,10 @@ export class District {
 
     const [districtRoads, cityBlocks] = this.divideByCityBlocks();
     districtGroup.add(districtRoads);
-    console.log('cityBlocks', cityBlocks);
+
+    districtGroup.add(
+      this.generateBuildings(cityBlocks)
+    );
 
     return districtGroup;
   }
@@ -93,8 +100,7 @@ export class District {
     const minY = Math.min(cityBlock[0].y, cityBlock[1].y);
     const maxY = Math.max(cityBlock[0].y, cityBlock[1].y);
 
-    const patchSeed = cityBlock[0].x + cityBlock[0].y * 1000000
-      + cityBlock[1].x * 1000000000000 + cityBlock[1].y * 1000000000000000000;
+    const patchSeed = getRectanglePatchSeed(cityBlock);
 
     if (divideBy === 'x') {
       const x = this.random.interval(minX + minSpacing, maxX - minSpacing, patchSeed);
@@ -137,5 +143,71 @@ export class District {
 
       return [road, newCityBlocks];
     }
+  }
+
+  private generateBuildings(cityBlocks: Rectangle[]): THREE.Group {
+    const buildings = new THREE.Group();
+    buildings.name = 'Buildings';
+
+    cityBlocks.forEach((cityBlock) => {
+      const patchSeed = getRectanglePatchSeed(cityBlock);
+
+      const buildingsRectangles = this.generateBuildingsForCityBlock(
+        cityBlock,
+        this.random.options(['x', 'y'], patchSeed),
+      );
+
+      buildings.add(
+        ...buildingsRectangles.map(
+          (buildingRectangle) => generatePlane(buildingRectangle[0], buildingRectangle[1], 'BuildingRectangle')
+        ),
+      );
+    });
+
+    return buildings;
+  }
+
+  private generateBuildingsForCityBlock(
+    cityBlock: Rectangle,
+    divideBy: 'x' | 'y',
+  ): Rectangle[] {
+    const rectangle = insetRectangle(cityBlock, this.options.cityBlockOptions.roadOffset);
+    return this.generateBuildingsForCityBlockIteration(rectangle, divideBy, 2);
+  }
+
+  private generateBuildingsForCityBlockIteration(
+    rectangle: Rectangle,
+    divideBy: 'x' | 'y',
+    iterationsRemaining: number,
+  ): Rectangle[] {
+    if (iterationsRemaining === 0) {
+      return [rectangle];
+    }
+
+    const patchSeed = getRectanglePatchSeed(rectangle);
+    const gap = this.random.interval(
+      this.options.cityBlockOptions.minBuildingsGap,
+      this.options.cityBlockOptions.maxBuildingsGap,
+      patchSeed,
+    );
+
+    const newRectangles = subdivideRectangle(
+      rectangle,
+      this.random,
+      {
+        divideBy,
+        gap,
+        offset: this.options.cityBlockOptions.minBuildingSize,
+      },
+    );
+
+    return newRectangles.reduce<Rectangle[]>((acc, newRectangle) => [
+      ...acc,
+      ...this.generateBuildingsForCityBlockIteration(
+        newRectangle,
+        divideBy === 'x' ? 'y' : 'x',
+        iterationsRemaining - 1,
+      ),
+    ], []);
   }
 }

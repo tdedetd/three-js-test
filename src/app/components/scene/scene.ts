@@ -20,18 +20,24 @@ export class Scene {
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xad9d76);
-    scene.fog = new THREE.Fog(0xad9d76, 500, 1000);
+    scene.fog = new THREE.Fog(0xad9d76, 1800, 2000);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.shadowMap.enabled = true;
 
-    this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 1000);
-    this.camera.position.set(12.7, 10, 5.5);
+    this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 4000);
+    this.camera.position.set(167, 129, 65);
 
     {
       const district = new District({
-        innerSize: 20,
-        roadWidth: 1,
-        minCityBlockSize: 5,
+        innerSize: 4000,
+        roadWidth: 10,
+        minCityBlockSize: 100,
+        cityBlockOptions: {
+          roadOffset: 6,
+          minBuildingSize: 16,
+          minBuildingsGap: 7,
+          maxBuildingsGap: 10,
+        },
         seed: 574829103718473,
       });
       scene.add(district.group);
@@ -45,6 +51,10 @@ export class Scene {
     {
       const controls = new OrbitControls(this.camera, this.renderer.domElement);
       controls.update();
+
+      // controls.addEventListener('change', () => {
+      //   console.log(this.camera.position);
+      // });
     }
 
     this.addGrid(scene, 20);
@@ -79,7 +89,7 @@ export class Scene {
   }
 
   private addGrid(scene: THREE.Scene<THREE.Object3DEventMap>, size: number): void {
-    const axesHelper = new THREE.AxesHelper(3);
+    const axesHelper = new THREE.AxesHelper(30);
     axesHelper.position.y = 0.1
     scene.add(axesHelper);
 

@@ -8,5 +8,14 @@ export interface DistrictOptions {
   /** In meters */
   minCityBlockSize: number;
 
+  cityBlockOptions: CityBlockOptions;
+
   seed?: number;
+}
+
+export interface CityBlockOptions {
+  roadOffset: number;
+  minBuildingSize: number;
+  minBuildingsGap: number;
+  maxBuildingsGap: number;
 }
