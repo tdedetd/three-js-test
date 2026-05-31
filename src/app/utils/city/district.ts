@@ -44,40 +44,65 @@ export class District {
       [halfInnerSize, halfInnerSize],
     ];
 
-    const cityBlocks = this.divideByCityBlocksIterations(
-      'y',
+    const cityBlocks = this.divideByCityBlocksIteration(
       districtRoads,
       initialCityBlock,
-      2,
+      'y',
     );
     return [districtRoads, cityBlocks];
   }
 
-  private divideByCityBlocksIterations(
-    divideBy: 'x' | 'y',
+  private divideByCityBlocksIteration(
     districtRoads: THREE.Group,
     cityBlock: Rectangle,
-    iterationsRemaining: number,
+    divideBy?: 'x' | 'y',
   ): Rectangle[] {
-    if (iterationsRemaining === 0) {
+    const xSize = Math.abs(cityBlock[0][0] - cityBlock[1][0]);
+    const ySize = Math.abs(cityBlock[0][1] - cityBlock[1][1]);
+    const maxSize = (this.options.minCityBlockSize * 2) + this.options.roadWidth;
+
+    if (xSize < maxSize && ySize < maxSize) {
       return [cityBlock];
     }
 
-    const minSpacing = this.options.minCityBlockSize + this.halfRoadWidth;
+    const [road, newCityBlocks] = this.getNewCityBlocksWithRoad(
+      divideBy ?? (xSize > ySize ? 'x' : 'y'),
+      cityBlock,
+      maxSize / 2,
+    );
+    districtRoads.add(road);
 
+    return newCityBlocks.reduce<Rectangle[]>((acc, newCityBlock) => {
+      return [
+        ...acc,
+        ...this.divideByCityBlocksIteration(
+          districtRoads,
+          newCityBlock,
+        ),
+      ];
+    }, []);
+  }
+
+  private getNewCityBlocksWithRoad(
+    divideBy: 'x' | 'y',
+    cityBlock: Rectangle,
+    minSpacing: number,
+  ): [THREE.Mesh, Rectangle[]] {
     const minX = Math.min(cityBlock[0][0], cityBlock[1][0]);
     const maxX = Math.max(cityBlock[0][0], cityBlock[1][0]);
     const minY = Math.min(cityBlock[0][1], cityBlock[1][1]);
     const maxY = Math.max(cityBlock[0][1], cityBlock[1][1]);
 
+    const patchSeed = cityBlock[0][0] + cityBlock[0][1] * 1000000
+      + cityBlock[1][0] * 1000000000000 + cityBlock[1][1] * 1000000000000000000;
+
     if (divideBy === 'x') {
-      const x = this.random.interval(minX + minSpacing, maxX - minSpacing);
+      const x = this.random.interval(minX + minSpacing, maxX - minSpacing, patchSeed);
       const road = generateRoad(
         this.options.roadWidth,
         [x, minY + this.halfRoadWidth],
         [x, maxY - this.halfRoadWidth],
       );
-      districtRoads.add(road);
 
       const newCityBlocks: Rectangle[] = [
         [
@@ -90,23 +115,14 @@ export class District {
         ],
       ];
 
-      return newCityBlocks.reduce<Rectangle[]>((acc, newCityBlock) => [
-        ...acc,
-        ...this.divideByCityBlocksIterations(
-          'y',
-          districtRoads,
-          newCityBlock,
-          iterationsRemaining - 1,
-        ),
-      ], []);
+      return [road, newCityBlocks];
     } else {
-      const y = this.random.interval(minY + minSpacing, maxY - minSpacing);
+      const y = this.random.interval(minY + minSpacing, maxY - minSpacing, patchSeed);
       const road = generateRoad(
         this.options.roadWidth,
         [minX + this.halfRoadWidth, y],
         [maxX - this.halfRoadWidth, y],
       );
-      districtRoads.add(road);
 
       const newCityBlocks: Rectangle[] = [
         [
@@ -119,15 +135,7 @@ export class District {
         ],
       ];
 
-      return newCityBlocks.reduce<Rectangle[]>((acc, newCityBlock) => [
-        ...acc,
-        ...this.divideByCityBlocksIterations(
-          'x',
-          districtRoads,
-          newCityBlock,
-          iterationsRemaining - 1,
-        ),
-      ], []);
+      return [road, newCityBlocks];
     }
   }
 }
