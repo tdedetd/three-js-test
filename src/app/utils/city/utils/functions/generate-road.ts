@@ -8,8 +8,8 @@ export function generateRoad(
   to: Point,
   customName?: string,
 ) {
-  const xSize = Math.abs(to[0] - from[0]);
-  const zSize = Math.abs(to[1] - from[1]);
+  const xSize = Math.abs(to.x - from.x);
+  const zSize = Math.abs(to.y - from.y);
 
   const geometry = new THREE.PlaneGeometry(xSize + width, zSize + width);
   const material = new THREE.MeshStandardMaterial({
@@ -19,8 +19,8 @@ export function generateRoad(
   });
 
   const mesh = new THREE.Mesh(geometry, material);
-  mesh.position.x = Math.min(from[0], to[0]) + xSize / 2;
-  mesh.position.z = Math.min(from[1], to[1]) + zSize / 2;
+  mesh.position.x = Math.min(from.x, to.x) + xSize / 2;
+  mesh.position.z = Math.min(from.y, to.y) + zSize / 2;
   mesh.rotation.x = degToRad(-90);
   mesh.name = customName ?? 'Road';
   return mesh;

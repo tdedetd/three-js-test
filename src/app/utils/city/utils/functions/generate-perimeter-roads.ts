@@ -15,39 +15,39 @@ export function generatePerimeterRoads(roadWidth: number, innerSize: number): TH
     name: string,
   }[] = [
     {
-      point1: [-halfInnerSize - roadHalfWidth, -halfInnerSize + roadHalfWidth],
-      point2: [-halfInnerSize - roadHalfWidth, halfInnerSize - roadHalfWidth],
+      point1: { x: -halfInnerSize - roadHalfWidth, y: -halfInnerSize + roadHalfWidth },
+      point2: { x: -halfInnerSize - roadHalfWidth, y: halfInnerSize - roadHalfWidth },
       name: 'PerimeterRoadLeft',
     },
     {
-      point1: [-halfInnerSize + roadHalfWidth, -halfInnerSize - roadHalfWidth],
-      point2: [halfInnerSize - roadHalfWidth, -halfInnerSize - roadHalfWidth],
+      point1: { x: -halfInnerSize + roadHalfWidth, y: -halfInnerSize - roadHalfWidth },
+      point2: { x: halfInnerSize - roadHalfWidth, y: -halfInnerSize - roadHalfWidth },
       name: 'PerimeterRoadTop',
     },
     {
-      point1: [halfInnerSize + roadHalfWidth, -halfInnerSize + roadHalfWidth],
-      point2: [halfInnerSize + roadHalfWidth, halfInnerSize - roadHalfWidth],
+      point1: { x: halfInnerSize + roadHalfWidth, y: -halfInnerSize + roadHalfWidth },
+      point2: { x: halfInnerSize + roadHalfWidth, y: halfInnerSize - roadHalfWidth },
       name: 'PerimeterRoadRight',
     },
     {
-      point1: [-halfInnerSize + roadHalfWidth, halfInnerSize + roadHalfWidth],
-      point2: [halfInnerSize - roadHalfWidth, halfInnerSize + roadHalfWidth],
+      point1: { x: -halfInnerSize + roadHalfWidth, y: halfInnerSize + roadHalfWidth },
+      point2: { x: halfInnerSize - roadHalfWidth, y: halfInnerSize + roadHalfWidth },
       name: 'PerimeterRoadBottom',
     },
     {
-      point1: [-halfInnerSize - roadHalfWidth, -halfInnerSize - roadHalfWidth],
+      point1: { x: -halfInnerSize - roadHalfWidth, y: -halfInnerSize - roadHalfWidth },
       name: 'PerimeterCrossroadTopLeft',
     },
     {
-      point1: [halfInnerSize + roadHalfWidth, -halfInnerSize - roadHalfWidth],
+      point1: { x: halfInnerSize + roadHalfWidth, y: -halfInnerSize - roadHalfWidth },
       name: 'PerimeterCrossroadTopRight',
     },
     {
-      point1: [-halfInnerSize - roadHalfWidth, halfInnerSize + roadHalfWidth],
+      point1: { x: -halfInnerSize - roadHalfWidth, y: halfInnerSize + roadHalfWidth },
       name: 'PerimeterCrossroadBottomLeft',
     },
     {
-      point1: [halfInnerSize + roadHalfWidth, halfInnerSize + roadHalfWidth],
+      point1: { x: halfInnerSize + roadHalfWidth, y: halfInnerSize + roadHalfWidth },
       name: 'PerimeterCrossroadBottomRight',
     },
   ];

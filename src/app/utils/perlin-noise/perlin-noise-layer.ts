@@ -28,10 +28,10 @@ export class PerlinNoiseLayer {
     const blGradient = this.getRandomGradientVector([closestMinX, closestMaxY]);
     const brGradient = this.getRandomGradientVector([closestMaxX, closestMaxY]);
 
-    const tlDistance: Point = [x - closestMinX, y - closestMinY];
-    const trDistance: Point = [x - closestMaxX, y - closestMinY];
-    const blDistance: Point = [x - closestMinX, y - closestMaxY];
-    const brDistance: Point = [x - closestMaxX, y - closestMaxY];
+    const tlDistance: Point = { x: x - closestMinX, y: y - closestMinY };
+    const trDistance: Point = { x: x - closestMaxX, y: y - closestMinY };
+    const blDistance: Point = { x: x - closestMinX, y: y - closestMaxY };
+    const brDistance: Point = { x: x - closestMaxX, y: y - closestMaxY };
 
     const tlDot = dot(tlGradient, tlDistance);
     const trDot = dot(trGradient, trDistance);
