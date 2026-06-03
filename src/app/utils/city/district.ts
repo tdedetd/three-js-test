@@ -8,16 +8,19 @@ import { getRectanglePatchSeed } from './utils/functions/get-rectangle-patch-see
 import { generatePlane } from './utils/functions/generate-plane';
 import { subdivideRectangle } from './utils/functions/subsivide-rectangle';
 import { insetRectangle } from '../functions/inset-rectangle';
+import { Point } from '../../models/point.model';
 
 export class District {
   public readonly group: THREE.Group;
   private random: SeededRandom;
   private options: DistrictOptions;
   private halfRoadWidth: number;
+  private center: Point;
 
-  constructor(options: DistrictOptions) {
+  constructor(options: DistrictOptions, center: Point) {
     this.random = new SeededRandom(options.seed);
     this.options = options;
+    this.center = center;
     this.halfRoadWidth = options.roadWidth / 2;
 
     this.group = this.generate();
@@ -26,6 +29,8 @@ export class District {
   private generate(): THREE.Group {
     const districtGroup = new THREE.Group();
     districtGroup.name = 'District';
+    districtGroup.position.x = this.center.x;
+    districtGroup.position.z = this.center.y;
 
     districtGroup.add(
       generatePerimeterRoads(this.options.roadWidth, this.options.innerSize)
@@ -100,7 +105,7 @@ export class District {
     const minY = Math.min(cityBlock[0].y, cityBlock[1].y);
     const maxY = Math.max(cityBlock[0].y, cityBlock[1].y);
 
-    const patchSeed = getRectanglePatchSeed(cityBlock);
+    const patchSeed = getRectanglePatchSeed(cityBlock, this.center);
 
     if (divideBy === 'x') {
       const x = this.random.interval(minX + minSpacing, maxX - minSpacing, patchSeed);
@@ -150,7 +155,7 @@ export class District {
     buildings.name = 'Buildings';
 
     cityBlocks.forEach((cityBlock) => {
-      const patchSeed = getRectanglePatchSeed(cityBlock);
+      const patchSeed = getRectanglePatchSeed(cityBlock, this.center);
 
       const buildingsRectangles = this.generateBuildingsForCityBlock(
         cityBlock,
@@ -184,7 +189,7 @@ export class District {
       return [rectangle];
     }
 
-    const patchSeed = getRectanglePatchSeed(rectangle);
+    const patchSeed = getRectanglePatchSeed(rectangle, this.center);
     const gap = this.random.interval(
       this.options.cityBlockOptions.minBuildingsGap,
       this.options.cityBlockOptions.maxBuildingsGap,

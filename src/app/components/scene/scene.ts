@@ -1,7 +1,7 @@
 import { Component, effect, ElementRef, HostListener, inject, Renderer2 } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
-import { District } from '../../utils/city/district';
+import { City } from '../../utils/city/city';
 
 @Component({
   selector: 'app-scene',
@@ -28,7 +28,7 @@ export class Scene {
     this.camera.position.set(167, 129, 65);
 
     {
-      const district = new District({
+      const city = new City({
         innerSize: 4000,
         roadWidth: 10,
         minCityBlockSize: 100,
@@ -40,7 +40,7 @@ export class Scene {
         },
         seed: 574829103718473,
       });
-      scene.add(district.group);
+      scene.add(city.group);
     }
 
     {
