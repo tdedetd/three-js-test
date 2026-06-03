@@ -1,14 +1,15 @@
 import * as THREE from 'three';
 import { Point } from '../../../../models/point.model';
 import { degToRad } from 'three/src/math/MathUtils.js';
+import { getRectangleSize } from '../../../functions/get-rectangle-size';
 
+// TODO: rectangle instead from, to
 export function generatePlane(
   from: Point,
   to: Point,
   customName?: string,
 ) {
-  const xSize = Math.abs(to.x - from.x);
-  const zSize = Math.abs(to.y - from.y);
+  const { xSize, ySize: zSize } = getRectangleSize([from, to]);
 
   const geometry = new THREE.PlaneGeometry(xSize, zSize);
   const material = new THREE.MeshStandardMaterial({

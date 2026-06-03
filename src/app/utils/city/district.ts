@@ -5,10 +5,11 @@ import { generatePerimeterRoads } from './utils/functions/generate-perimeter-roa
 import { Rectangle } from '../../models/rectangle.model';
 import { generateRoad } from './utils/functions/generate-road';
 import { getRectanglePatchSeed } from './utils/functions/get-rectangle-patch-seed';
-import { generatePlane } from './utils/functions/generate-plane';
 import { subdivideRectangle } from './utils/functions/subsivide-rectangle';
 import { insetRectangle } from '../functions/inset-rectangle';
 import { Point } from '../../models/point.model';
+import { getRectangleSize } from '../functions/get-rectangle-size';
+import { generateBuilding } from './utils/functions/generate-building';
 
 export class District {
   public readonly group: THREE.Group;
@@ -69,8 +70,7 @@ export class District {
     cityBlock: Rectangle,
     divideBy?: 'x' | 'y',
   ): Rectangle[] {
-    const xSize = Math.abs(cityBlock[0].x - cityBlock[1].x);
-    const ySize = Math.abs(cityBlock[0].y - cityBlock[1].y);
+    const { xSize, ySize } = getRectangleSize(cityBlock);
     const maxSize = (this.options.minCityBlockSize * 2) + this.options.roadWidth;
 
     if (xSize < maxSize && ySize < maxSize) {
@@ -164,7 +164,7 @@ export class District {
 
       buildings.add(
         ...buildingsRectangles.map(
-          (buildingRectangle) => generatePlane(buildingRectangle[0], buildingRectangle[1], 'BuildingRectangle')
+          (buildingRectangle) => generateBuilding(buildingRectangle, 10)
         ),
       );
     });

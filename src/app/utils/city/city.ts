@@ -13,7 +13,6 @@ export class City {
     this.districtOptions = districtOptions;
 
     this.generateDistrict({ x: 0, y: 0 });
-    this.generateDistrict({ x: 1, y: 0 });
   }
 
   private generateDistrict(gridCoords: Point): void {
