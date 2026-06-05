@@ -14,18 +14,12 @@ export class City {
     this.group.name = 'City';
     this.districtOptions = districtOptions;
 
-    this.perlinNoise = new PerlinNoise(
-      [
-        { gridSize: 1000 },
-        { gridSize: 500 },
-        { gridSize: 250 },
-        { gridSize: 125 },
-      ],
-      {
-        seed: districtOptions.seed,
-        persistance: 0.5,
-      },
-    );
+    this.perlinNoise = new PerlinNoise({
+      gridSize: 1000,
+      octaves: 3,
+      persistance: 0.5,
+      seed: 574829103718473,
+    });
 
     this.generateDistrict({ x: 0, y: 0 });
   }

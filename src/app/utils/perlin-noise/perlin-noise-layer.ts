@@ -2,26 +2,25 @@ import { dot } from '../functions/dot';
 import { lerp } from '../functions/lerp';
 import { qunticCurve } from '../functions/quntic-curve';
 import { toCartesian } from '../functions/to-cartesian';
-import { PerlinNoiseLayerOptions } from './models/perlin-noise-layer-options.model';
 import { Point } from '../../models/point.model';
 import { PerlinNoiseCache } from './perlin-noise-cache';
 import { SeededRandom } from './seeded-random';
 
 export class PerlinNoiseLayer {
   private cache = new PerlinNoiseCache();
+  private gridSize: number;
   private random: SeededRandom;
-  private options: PerlinNoiseLayerOptions;
 
-  constructor(options: PerlinNoiseLayerOptions, seed?: number) {
-    this.options = options;
+  constructor(gridSize: number, seed?: number) {
+    this.gridSize = gridSize;
     this.random = new SeededRandom(seed);
   }
 
   public getValue(x: number, y: number): number {
-    const closestMinX = Math.floor(x / this.options.gridSize) * this.options.gridSize;
-    const closestMinY = Math.floor(y / this.options.gridSize) * this.options.gridSize;
-    const closestMaxX = closestMinX + this.options.gridSize;
-    const closestMaxY = closestMinY + this.options.gridSize;
+    const closestMinX = Math.floor(x / this.gridSize) * this.gridSize;
+    const closestMinY = Math.floor(y / this.gridSize) * this.gridSize;
+    const closestMaxX = closestMinX + this.gridSize;
+    const closestMaxY = closestMinY + this.gridSize;
 
     const tlGradient = this.getRandomGradientVector([closestMinX, closestMinY]);
     const trGradient = this.getRandomGradientVector([closestMaxX, closestMinY]);
@@ -38,12 +37,12 @@ export class PerlinNoiseLayer {
     const blDot = dot(blGradient, blDistance);
     const brDot = dot(brGradient, brDistance);
 
-    const tx = qunticCurve((x - closestMinX) / this.options.gridSize);
-    const ty = qunticCurve((y - closestMinY) / this.options.gridSize);
+    const tx = qunticCurve((x - closestMinX) / this.gridSize);
+    const ty = qunticCurve((y - closestMinY) / this.gridSize);
 
     const tLerp = lerp(tlDot, trDot, tx);
     const bLerp = lerp(blDot, brDot, tx);
-    return lerp(tLerp, bLerp, ty) / this.options.gridSize;
+    return lerp(tLerp, bLerp, ty) / this.gridSize;
   }
 
   private getRandomGradientVector(point: [number, number]): Point {

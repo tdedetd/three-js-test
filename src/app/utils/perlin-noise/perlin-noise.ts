@@ -1,18 +1,19 @@
-import { PerlinNoiseLayerOptions } from './models/perlin-noise-layer-options.model';
 import { PerlinNoiseLayer } from './perlin-noise-layer';
 
 interface PerlinNoiseOptions {
-  seed?: number;
+  gridSize: number;
+  octaves?: number;
   persistance?: number;
+  seed?: number;
 }
 
 export class PerlinNoise {
   private layers: PerlinNoiseLayer[];
-  private persistance: number;
+  private options: PerlinNoiseOptions;
 
-  constructor(layersOptions: PerlinNoiseLayerOptions[], options?: PerlinNoiseOptions) {
-    this.layers = layersOptions.map((layerOptions) => new PerlinNoiseLayer(layerOptions, options?.seed));
-    this.persistance = options?.persistance ?? 1;
+  constructor(options: PerlinNoiseOptions) {
+    this.options = options;
+    this.layers = this.getLayers();
   }
 
   public getValue(x: number, y: number): number {
@@ -23,9 +24,24 @@ export class PerlinNoise {
     for (const layer of this.layers) {
       value += layer.getValue(x, y) * amplitude;
       maxAmplitude = maxAmplitude + amplitude;
-      amplitude = amplitude * this.persistance;
+      amplitude = amplitude * (this.options.persistance ?? 0.5);
     }
 
     return value / maxAmplitude;
+  }
+
+  private getLayers(): PerlinNoiseLayer[] {
+    const layers: PerlinNoiseLayer[] = [];
+
+    let currentGridSize = this.options.gridSize;
+    let octavesCounter = this.options.octaves ?? 1;
+
+    while (octavesCounter > 0) {
+      layers.push(new PerlinNoiseLayer(currentGridSize, this.options.seed));
+      currentGridSize = currentGridSize / 2;
+      octavesCounter--;
+    }
+
+    return layers;
   }
 }

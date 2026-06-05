@@ -12,17 +12,12 @@ export function generatePerlinNoise(
   length: number,
   cubeSize = 1,
 ): void {
-  const perlinNoise = new PerlinNoise(
-    [
-      { gridSize: 1000 },
-      { gridSize: 500 },
-      { gridSize: 250 },
-    ],
-    {
-      seed: 574829103718473,
-      persistance: 0.5,
-    },
-  );
+  const perlinNoise = new PerlinNoise({
+    gridSize: 100,
+    octaves: 10,
+    persistance: 0.5,
+    seed: 574829103718473,
+  });
 
   const group = new THREE.Group();
   group.name = 'PerlinNoiseGrid';
