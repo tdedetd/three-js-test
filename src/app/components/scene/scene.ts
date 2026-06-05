@@ -2,8 +2,7 @@ import { Component, effect, ElementRef, HostListener, inject, Renderer2 } from '
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { City } from '../../utils/city/city';
-import testVert from './test-vert.glsl';
-import testFrag from './test-frag.glsl';
+import { generateSkybox } from './utils/functions/generate-skybox';
 
 @Component({
   selector: 'app-scene',
@@ -21,8 +20,8 @@ export class Scene {
     const renderer = inject(Renderer2);
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xad9d76);
-    scene.fog = new THREE.Fog(0xad9d76, 1800, 2000);
+    scene.background = new THREE.Color(0xff3604);
+    scene.fog = new THREE.Fog(0xff3604, 1800, 4000);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.shadowMap.enabled = true;
 
@@ -68,23 +67,7 @@ export class Scene {
       // });
     }
 
-    // test code
-    // {
-    //   const vertexShader = testVert;
-    //   const fragmentShader = testFrag;
-
-    //   const shaderMaterial = new THREE.ShaderMaterial({
-    //     vertexShader: vertexShader,
-    //     fragmentShader: fragmentShader,
-    //     // depthTest: false,
-    //     // depthWrite: false,
-    //     // side: THREE.DoubleSide,
-    //   });
-
-    //   const geometry = new THREE.BoxGeometry(100, 100, 100);
-    //   const cube = new THREE.Mesh(geometry, shaderMaterial);
-    //   scene.add(cube);
-    // }
+    scene.add(generateSkybox());
 
     this.addGrid(scene, 20);
 

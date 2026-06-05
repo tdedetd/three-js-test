@@ -171,7 +171,7 @@ export class District {
           (buildingRectangle) => {
             const center = getRectangleCenter(buildingRectangle);
             // correct formula
-            const height = (this.buildingsHeightMap.getValue(center.x, center.y) + 0.5) * 100;
+            const height = (this.buildingsHeightMap.getValue(center.x, center.y) + 0.5) * 150;
             return generateBuilding(buildingRectangle, height);
           }
         ),

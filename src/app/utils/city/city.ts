@@ -16,8 +16,8 @@ export class City {
 
     this.perlinNoise = new PerlinNoise({
       gridSize: 1000,
-      octaves: 3,
-      persistance: 0.5,
+      octaves: 5,
+      persistance: 0.8,
       seed: 574829103718473,
     });
 
