@@ -31,7 +31,12 @@
             ],
             "styles": [
               "src/styles.scss"
-            ]
+            ],
+            "loader": {
+              ".glsl": "text",
+              ".frag": "text",
+              ".vert": "text"
+            }
           },
           "configurations": {
             "production": {
