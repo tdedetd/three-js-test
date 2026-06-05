@@ -164,7 +164,7 @@ export class District {
 
       buildings.add(
         ...buildingsRectangles.map(
-          (buildingRectangle) => generateBuilding(buildingRectangle, 10)
+          (buildingRectangle) => generateBuilding(buildingRectangle, 20)
         ),
       );
     });

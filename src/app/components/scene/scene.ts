@@ -33,10 +33,10 @@ export class Scene {
         roadWidth: 10,
         minCityBlockSize: 100,
         cityBlockOptions: {
-          roadOffset: 6,
-          minBuildingSize: 16,
-          minBuildingsGap: 7,
-          maxBuildingsGap: 10,
+          roadOffset: 10,
+          minBuildingSize: 18,
+          minBuildingsGap: 8,
+          maxBuildingsGap: 20,
         },
         seed: 574829103718473,
       });

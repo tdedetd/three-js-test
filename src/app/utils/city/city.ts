@@ -2,15 +2,31 @@ import * as THREE from 'three';
 import { District } from './district';
 import { DistrictOptions } from './models/district-options.model';
 import { Point } from '../../models/point.model';
+import { PerlinNoise } from '../perlin-noise/perlin-noise';
 
 export class City {
   public readonly group: THREE.Group;
   private districtOptions: DistrictOptions;
+  private perlinNoise: PerlinNoise;
 
   constructor(districtOptions: DistrictOptions) {
     this.group = new THREE.Group();
     this.group.name = 'City';
     this.districtOptions = districtOptions;
+
+    this.perlinNoise = new PerlinNoise(
+      [
+        { gridSize: 16 },
+        { gridSize: 8 },
+        { gridSize: 4 },
+        { gridSize: 2 },
+        { gridSize: 1 },
+      ],
+      {
+        seed: districtOptions.seed,
+        persistance: 0.5,
+      },
+    );
 
     this.generateDistrict({ x: 0, y: 0 });
   }
