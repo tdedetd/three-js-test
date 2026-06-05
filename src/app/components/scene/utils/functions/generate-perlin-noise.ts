@@ -14,11 +14,9 @@ export function generatePerlinNoise(
 ): void {
   const perlinNoise = new PerlinNoise(
     [
-      { gridSize: 16 },
-      { gridSize: 8 },
-      { gridSize: 4 },
-      { gridSize: 2 },
-      { gridSize: 1 },
+      { gridSize: 1000 },
+      { gridSize: 500 },
+      { gridSize: 250 },
     ],
     {
       seed: 574829103718473,

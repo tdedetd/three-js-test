@@ -16,11 +16,10 @@ export class City {
 
     this.perlinNoise = new PerlinNoise(
       [
-        { gridSize: 16 },
-        { gridSize: 8 },
-        { gridSize: 4 },
-        { gridSize: 2 },
-        { gridSize: 1 },
+        { gridSize: 1000 },
+        { gridSize: 500 },
+        { gridSize: 250 },
+        { gridSize: 125 },
       ],
       {
         seed: districtOptions.seed,
@@ -37,7 +36,7 @@ export class City {
       y: this.districtOptions.innerSize * gridCoords.y + this.districtOptions.roadWidth * gridCoords.y,
     };
 
-    const district = new District(this.districtOptions, center);
+    const district = new District(this.districtOptions, center, this.perlinNoise);
     this.group.add(district.group);
   }
 }

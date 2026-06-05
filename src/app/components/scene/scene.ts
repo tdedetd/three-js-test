@@ -44,8 +44,13 @@ export class Scene {
     }
 
     {
-      const light = new THREE.PointLight(0xffffff, 1000, 1000000, 0.999);
-      light.position.set(500, 30, 0);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+      scene.add(ambientLight);
+    }
+
+    {
+      const light = new THREE.PointLight(0xffffff, 10000, 1000000, 0.8);
+      light.position.set(1000, 300, 0);
       light.castShadow = true;
       light.shadow.mapSize.width = 2048;
       light.shadow.mapSize.height = 2048;

@@ -10,6 +10,8 @@ import { insetRectangle } from '../functions/inset-rectangle';
 import { Point } from '../../models/point.model';
 import { getRectangleSize } from '../functions/get-rectangle-size';
 import { generateBuilding } from './utils/functions/generate-building';
+import { PerlinNoise } from '../perlin-noise/perlin-noise';
+import { getRectangleCenter } from '../functions/get-rectangle-center';
 
 export class District {
   public readonly group: THREE.Group;
@@ -17,11 +19,13 @@ export class District {
   private options: DistrictOptions;
   private halfRoadWidth: number;
   private center: Point;
+  private buildingsHeightMap: PerlinNoise;
 
-  constructor(options: DistrictOptions, center: Point) {
+  constructor(options: DistrictOptions, center: Point, buildingsHeightMap: PerlinNoise) {
     this.random = new SeededRandom(options.seed);
     this.options = options;
     this.center = center;
+    this.buildingsHeightMap = buildingsHeightMap;
     this.halfRoadWidth = options.roadWidth / 2;
 
     this.group = this.generate();
@@ -164,7 +168,12 @@ export class District {
 
       buildings.add(
         ...buildingsRectangles.map(
-          (buildingRectangle) => generateBuilding(buildingRectangle, 20)
+          (buildingRectangle) => {
+            const center = getRectangleCenter(buildingRectangle);
+            // correct formula
+            const height = (this.buildingsHeightMap.getValue(center.x, center.y) + 0.5) * 100;
+            return generateBuilding(buildingRectangle, height);
+          }
         ),
       );
     });
