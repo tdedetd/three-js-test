@@ -2,6 +2,8 @@ import { Component, effect, ElementRef, HostListener, inject, Renderer2 } from '
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { City } from '../../utils/city/city';
+import testVert from './test-vert.glsl';
+import testFrag from './test-frag.glsl';
 
 @Component({
   selector: 'app-scene',
@@ -65,6 +67,24 @@ export class Scene {
       //   console.log(this.camera.position);
       // });
     }
+
+    // test code
+    // {
+    //   const vertexShader = testVert;
+    //   const fragmentShader = testFrag;
+
+    //   const shaderMaterial = new THREE.ShaderMaterial({
+    //     vertexShader: vertexShader,
+    //     fragmentShader: fragmentShader,
+    //     // depthTest: false,
+    //     // depthWrite: false,
+    //     // side: THREE.DoubleSide,
+    //   });
+
+    //   const geometry = new THREE.BoxGeometry(100, 100, 100);
+    //   const cube = new THREE.Mesh(geometry, shaderMaterial);
+    //   scene.add(cube);
+    // }
 
     this.addGrid(scene, 20);
 
