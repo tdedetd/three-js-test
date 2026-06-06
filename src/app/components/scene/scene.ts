@@ -24,6 +24,7 @@ export class Scene {
     scene.fog = new THREE.Fog(0xff3604, 1800, 4000);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 4000);
     this.camera.position.set(167, 129, 65);
@@ -50,12 +51,25 @@ export class Scene {
     }
 
     {
-      const light = new THREE.PointLight(0xffffff, 10000, 1000000, 0.8);
-      light.position.set(1000, 300, 0);
-      light.castShadow = true;
-      light.shadow.mapSize.width = 2048;
-      light.shadow.mapSize.height = 2048;
-      scene.add(light);
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 10);
+      directionalLight.position.set(2000, 300, 0);
+      directionalLight.castShadow = true;
+      directionalLight.shadow.mapSize.width = 4096;
+      directionalLight.shadow.mapSize.height = 4096;
+
+      directionalLight.shadow.bias = -0.0001;
+
+      directionalLight.shadow.camera.near = 0.5;
+      directionalLight.shadow.camera.far = 20000;
+      directionalLight.shadow.camera.left = -2000;
+      directionalLight.shadow.camera.right = 2000;
+      directionalLight.shadow.camera.top = 2000;
+      directionalLight.shadow.camera.bottom = -2000;
+
+      scene.add(directionalLight);
+
+      // const lightHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
+      // scene.add(lightHelper);
     }
 
     {
