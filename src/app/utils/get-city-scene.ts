@@ -30,10 +30,10 @@ export function getCityScene(): THREE.Scene {
 }
 
 function addLights(scene: THREE.Scene): void {
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
   scene.add(ambientLight);
 
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 10);
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
   directionalLight.position.set(2000, 300, 0);
   directionalLight.castShadow = true;
   directionalLight.shadow.mapSize.width = 4096;

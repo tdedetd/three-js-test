@@ -12,8 +12,8 @@ export function generateBuilding(
   const geometry = new THREE.BoxGeometry(xSize, height, ySize);
   const material = new THREE.MeshStandardMaterial({
     color: 0xFF5555,
-    roughness: 0.6,
-    metalness: 0.1,
+    roughness: 0.9,
+    metalness: 0.2,
   });
 
   const center = getRectangleCenter(rectangle);

@@ -17,6 +17,7 @@ export function generateRoad(
     roughness: 0.6,
     metalness: 0.1,
     emissive: 0xe88300,
+    emissiveIntensity: 2,
   });
 
   const mesh = new THREE.Mesh(geometry, material);

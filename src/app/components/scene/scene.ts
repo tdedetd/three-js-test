@@ -27,12 +27,15 @@ export class Scene {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.toneMapping = THREE.ReinhardToneMapping;
 
+    const pixelRatio = window.devicePixelRatio;
+    this.renderer.setPixelRatio(pixelRatio * 2);
+
     this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 8000);
     this.camera.position.set(167, 129, 65);
 
     const renderPass = new RenderPass(scene, this.camera);
 
-    const bloomPassStrength = 0.1;
+    const bloomPassStrength = 0.3;
     const bloomPassRadius = 0.4;
     const bloomPassThreshold = 0.2;
     const bloomPass = new UnrealBloomPass(
@@ -42,7 +45,12 @@ export class Scene {
       bloomPassThreshold,
     );
 
-    this.effectComposer = new EffectComposer(this.renderer);
+    const size = this.renderer.getDrawingBufferSize(new THREE.Vector2());
+    const renderTarget = new THREE.WebGLRenderTarget(size.width, size.height, {
+      samples: 8,
+    });
+
+    this.effectComposer = new EffectComposer(this.renderer, renderTarget);
     this.effectComposer.addPass(renderPass);
     this.effectComposer.addPass(bloomPass);
 
