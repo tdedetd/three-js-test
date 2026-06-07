@@ -1,6 +1,6 @@
 import { Component, effect, ElementRef, HostListener, inject, Renderer2 } from '@angular/core';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/Addons.js';
+import { EffectComposer, OrbitControls, RenderPass, UnrealBloomPass } from 'three/examples/jsm/Addons.js';
 import { getCityScene } from '../../utils/get-city-scene';
 
 @Component({
@@ -14,6 +14,7 @@ export class Scene {
 
   private renderer: THREE.WebGLRenderer;
   private camera: THREE.PerspectiveCamera;
+  private effectComposer: EffectComposer
 
   constructor() {
     const renderer = inject(Renderer2);
@@ -21,12 +22,29 @@ export class Scene {
     const scene = getCityScene();
     scene.background = new THREE.Color(0xff3604);
     scene.fog = new THREE.Fog(0xff3604, 1500, 3500);
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer = new THREE.WebGLRenderer();
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.toneMapping = THREE.ReinhardToneMapping;
 
     this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 8000);
     this.camera.position.set(167, 129, 65);
+
+    const renderPass = new RenderPass(scene, this.camera);
+
+    const bloomPassStrength = 0.1;
+    const bloomPassRadius = 0.4;
+    const bloomPassThreshold = 0.2;
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(0, 0),
+      bloomPassStrength,
+      bloomPassRadius,
+      bloomPassThreshold,
+    );
+
+    this.effectComposer = new EffectComposer(this.renderer);
+    this.effectComposer.addPass(renderPass);
+    this.effectComposer.addPass(bloomPass);
 
     {
       const controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -44,7 +62,7 @@ export class Scene {
       this.updateSizes();
 
       const animate: XRFrameRequestCallback = (time) => {
-        this.renderer.render(scene, this.camera);
+        this.effectComposer.render();
       };
 
       this.renderer.setAnimationLoop(animate);
@@ -62,6 +80,7 @@ export class Scene {
       const width = element.clientWidth;
       const height = element.clientHeight;
       this.renderer.setSize(width, height);
+      this.effectComposer.setSize(width, height);
 
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
