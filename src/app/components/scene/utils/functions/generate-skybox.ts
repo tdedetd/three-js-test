@@ -3,7 +3,7 @@ import skyboxVert from './shaders/skybox-vert.glsl';
 import skyboxFrag from './shaders/skybox-frag.glsl';
 
 export function generateSkybox() {
-  const geometry = new THREE.BoxGeometry(4000, 4000, 4000);
+  const geometry = new THREE.SphereGeometry(4000, 32, 16);
   const positionAttribute = geometry.getAttribute('position');
 
   let minY = Infinity;
@@ -20,8 +20,8 @@ export function generateSkybox() {
     uniforms: {
       minY: { value: minY },
       maxY: { value: maxY },
-      from: { value: new THREE.Color(0xff0339) },
-      to: { value: new THREE.Color(0xffa203) },
+      from: { value: new THREE.Color(0xFF9500) },
+      to: { value: new THREE.Color(0xB30000) },
     },
     vertexShader: skyboxVert,
     fragmentShader: skyboxFrag,

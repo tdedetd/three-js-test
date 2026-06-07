@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { City } from '../../utils/city/city';
 import { generateSkybox } from './utils/functions/generate-skybox';
+import { generateLandscape } from './utils/functions/generate-landscape';
 
 @Component({
   selector: 'app-scene',
@@ -21,21 +22,21 @@ export class Scene {
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xff3604);
-    scene.fog = new THREE.Fog(0xff3604, 1800, 4000);
+    scene.fog = new THREE.Fog(0xff3604, 1500, 3500);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 4000);
+    this.camera = new THREE.PerspectiveCamera(75, 1 / 1, 0.1, 8000);
     this.camera.position.set(167, 129, 65);
 
     {
       const city = new City({
         innerSize: 4000,
-        roadWidth: 10,
+        roadWidth: 13,
         minCityBlockSize: 100,
         cityBlockOptions: {
-          roadOffset: 10,
+          roadOffset: 15,
           minBuildingSize: 18,
           minBuildingsGap: 8,
           maxBuildingsGap: 20,
@@ -81,6 +82,7 @@ export class Scene {
       // });
     }
 
+    scene.add(generateLandscape());
     scene.add(generateSkybox());
 
     this.addGrid(scene, 20);

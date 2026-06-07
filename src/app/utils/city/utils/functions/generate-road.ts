@@ -13,9 +13,10 @@ export function generateRoad(
 
   const geometry = new THREE.PlaneGeometry(xSize + width, zSize + width);
   const material = new THREE.MeshStandardMaterial({
-    color: 0x505050,
+    color: 0xe88300,
     roughness: 0.6,
     metalness: 0.1,
+    emissive: 0xe88300,
   });
 
   const mesh = new THREE.Mesh(geometry, material);
