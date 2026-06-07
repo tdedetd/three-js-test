@@ -1,9 +1,7 @@
 import { Component, effect, ElementRef, HostListener, inject, Renderer2 } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
-import { City } from '../../utils/city/city';
-import { generateSkybox } from './utils/functions/generate-skybox';
-import { generateLandscape } from './utils/functions/generate-landscape';
+import { getCityScene } from '../../utils/get-city-scene';
 
 @Component({
   selector: 'app-scene',
@@ -20,7 +18,7 @@ export class Scene {
   constructor() {
     const renderer = inject(Renderer2);
 
-    const scene = new THREE.Scene();
+    const scene = getCityScene();
     scene.background = new THREE.Color(0xff3604);
     scene.fog = new THREE.Fog(0xff3604, 1500, 3500);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -31,49 +29,6 @@ export class Scene {
     this.camera.position.set(167, 129, 65);
 
     {
-      const city = new City({
-        innerSize: 4000,
-        roadWidth: 13,
-        minCityBlockSize: 100,
-        cityBlockOptions: {
-          roadOffset: 15,
-          minBuildingSize: 18,
-          minBuildingsGap: 8,
-          maxBuildingsGap: 20,
-        },
-        seed: 574829103718473,
-      });
-      scene.add(city.group);
-    }
-
-    {
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-      scene.add(ambientLight);
-    }
-
-    {
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 10);
-      directionalLight.position.set(2000, 300, 0);
-      directionalLight.castShadow = true;
-      directionalLight.shadow.mapSize.width = 4096;
-      directionalLight.shadow.mapSize.height = 4096;
-
-      directionalLight.shadow.bias = -0.0001;
-
-      directionalLight.shadow.camera.near = 0.5;
-      directionalLight.shadow.camera.far = 20000;
-      directionalLight.shadow.camera.left = -2000;
-      directionalLight.shadow.camera.right = 2000;
-      directionalLight.shadow.camera.top = 2000;
-      directionalLight.shadow.camera.bottom = -2000;
-
-      scene.add(directionalLight);
-
-      // const lightHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-      // scene.add(lightHelper);
-    }
-
-    {
       const controls = new OrbitControls(this.camera, this.renderer.domElement);
       controls.update();
 
@@ -81,9 +36,6 @@ export class Scene {
       //   console.log(this.camera.position);
       // });
     }
-
-    scene.add(generateLandscape());
-    scene.add(generateSkybox());
 
     this.addGrid(scene, 20);
 
